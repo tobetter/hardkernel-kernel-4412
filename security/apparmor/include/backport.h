@@ -55,4 +55,8 @@ static inline int cap_mmap_addr(unsigned long addr)
 /* turn no_new_prics into an always false expr so the compiler throws it away */
 #define no_new_privs did_exec < 0
 
+/* commit: 83d498569e9a7a4b92c4c5d3566f2d6a604f28c9 */
+#define file_open dentry_open
+#define apparmor_file_open apparmor_dentry_open
+
 #endif /* __AA_BACKPORT_H */
