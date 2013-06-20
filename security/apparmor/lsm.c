@@ -149,13 +149,13 @@ static int apparmor_capget(struct task_struct *target, kernel_cap_t *effective,
 	return 0;
 }
 
-static int apparmor_capable(const struct cred *cred, struct user_namespace *ns,
-			    int cap, int audit)
+static int apparmor_capable(struct task_struct *task, const struct cred *cred,
+			    struct user_namespace *ns, int cap, int audit)
 {
 	struct aa_profile *profile;
 	struct aa_label *label;
 	/* cap_capable returns 0 on success, else -EPERM */
-	int i, error = cap_capable(cred, ns, cap, audit);
+	int i, error = cap_capable(task, cred, ns, cap, audit);
 	if (error)
 		return error;
 
@@ -164,7 +164,7 @@ static int apparmor_capable(const struct cred *cred, struct user_namespace *ns,
 		return 0;
 
 	label_for_each_confined(i, label, profile) {
-		int e = aa_capable(current, profile, cap, audit);
+		int e = aa_capable(task, profile, cap, audit);
 		if (e)
 			error = e;
 	}
