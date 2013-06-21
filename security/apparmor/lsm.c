@@ -378,7 +378,7 @@ static int apparmor_path_rename(struct path *old_dir, struct dentry *old_dentry,
 }
 
 static int apparmor_path_chmod(struct dentry *dentry, struct vfsmount *mnt,
-			       umode_t mode)
+			       mode_t mode)
 {
 	if (!mediated_filesystem(dentry->d_inode))
 		return 0;
