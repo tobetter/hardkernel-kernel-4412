@@ -24,4 +24,9 @@
 #define kuid_t uid_t
 #define kgid_t gid_t
 
+/* commit 2db81452931eb51cc739d6e495cf1bd4860c3c99 */
+#define GLOBAL_ROOT_UID 0
+#define from_kuid(X, UID) UID
+#define uid_eq(X, Y) ((X) == (Y))
+
 #endif /* __AA_BACKPORT_H */
