@@ -20,4 +20,8 @@
 /* commit 496ad9aa8ef448058e36ca7a787c61f2e63f0f54 */
 #define file_inode(FILE) ((FILE)->f_path.dentry->d_inode)
 
+/* commit d2b31ca644fdc8704de3367a6a56a5c958c77f53 */
+#define kuid_t uid_t
+#define kgid_t gid_t
+
 #endif /* __AA_BACKPORT_H */
