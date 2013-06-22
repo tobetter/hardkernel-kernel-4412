@@ -144,11 +144,11 @@ struct apparmor_audit_data {
 };
 
 /* define a short hand for apparmor_audit_data structure */
-#define aad(SA) (SA)->apparmor_audit_data
+#define aad(SA) ((struct apparmor_audit_data *)(SA)->apparmor_audit_data.profile)
 #define aad_set(SA, I)					\
 	do {						\
 		(SA)->tsk = NULL;			\
-		(SA)->apparmor_audit_data = (I);	\
+		(SA)->apparmor_audit_data.profile = (I);\
 	} while (0)
 
 void aa_audit_msg(int type, struct common_audit_data *sa,
