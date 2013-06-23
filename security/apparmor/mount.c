@@ -394,7 +394,7 @@ int aa_bind_mount(struct aa_label *label, struct path *path,
 	if (error)
 		goto error;
 
-	error = kern_path(dev_name, LOOKUP_FOLLOW|LOOKUP_AUTOMOUNT, &old_path);
+	error = kern_path(dev_name, LOOKUP_FOLLOW, &old_path);
 	if (error)
 		goto error;
 
