@@ -73,7 +73,7 @@ static int audit_caps(struct aa_profile *profile, struct task_struct *task,
 	sa.type = LSM_AUDIT_DATA_CAP;
 	aad_set(&sa, &aad);
 	sa.u.cap = cap;
-	aad.tsk = task;
+	sa.tsk = task;
 	aad.op = OP_CAPABLE;
 	aad.error = error;
 

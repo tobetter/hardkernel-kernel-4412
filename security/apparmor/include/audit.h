@@ -113,7 +113,6 @@ struct apparmor_audit_data {
 	struct aa_label *label;
 	const char *name;
 	const char *info;
-	struct task_struct *tsk;
 	union {
 		void *target;
 		struct {
@@ -146,7 +145,11 @@ struct apparmor_audit_data {
 
 /* define a short hand for apparmor_audit_data structure */
 #define aad(SA) (SA)->apparmor_audit_data
-#define aad_set(SA, I) (SA)->apparmor_audit_data = (I)
+#define aad_set(SA, I)					\
+	do {						\
+		(SA)->tsk = NULL;			\
+		(SA)->apparmor_audit_data = (I);	\
+	} while (0)
 
 void aa_audit_msg(int type, struct common_audit_data *sa,
 		  void (*cb) (struct audit_buffer *, void *));
