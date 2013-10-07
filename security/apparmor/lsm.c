@@ -797,13 +797,17 @@ static int unix_fs_perm(int op, struct aa_label *label, struct sock *sk,
 {
 	if (!unconfined(label) && UNIX_FS(sk)) {
 		struct unix_sock *u = unix_sk(sk);
-
-		/* the sunpath may not be valid for this ns so use the path */
-		struct path_cond cond = { u->path.dentry->d_inode->i_uid,
-					  u->path.dentry->d_inode->i_mode
+		struct path path = {
+			.dentry = u->dentry,
+			.mnt = u->mnt
 		};
 
-		return aa_path_perm(op, label, &u->path, 0, mask, &cond);
+		/* the sunpath may not be valid for this ns so use the path */
+		struct path_cond cond = { u->dentry->d_inode->i_uid,
+					  u->dentry->d_inode->i_mode
+		};
+
+		return aa_path_perm(op, label, &path, 0, mask, &cond);
 	}
 	return 0;
 }
