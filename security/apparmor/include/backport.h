@@ -68,22 +68,6 @@ static inline int cap_mmap_addr(unsigned long addr)
 #define file_open dentry_open
 #define apparmor_file_open apparmor_dentry_open
 
-/* recreate api introduced in 02125a826459a6ad142f8d91c5b6357562f96615 */
-static inline char *d_absolute_path(const struct path *path, char *buf,
-				    int buflen)
-{
-	struct path root, tmp = {};
-	char *res;
-
-	get_fs_root(current->fs, &root);
-	res = __d_path(path, &tmp, buf, buflen);
-	if (!IS_ERR(res) && (tmp.mnt != root.mnt || tmp.dentry != root.dentry)
-	    && (tmp.mnt != current->nsproxy->mnt_ns->root))
-		res = ERR_PTR(-EINVAL);
-	path_put(&root);
-	return res;
-}
-
 #define __d_path(P, R, B, L) __d_path_new(P, R, B, L)
 static inline char *__d_path_new(const struct path *path,
 				 const struct path *root, char *buf, int buflen)
@@ -97,11 +81,6 @@ static inline char *__d_path_new(const struct path *path,
 	    (tmp.mnt != root->mnt || tmp.dentry != root->dentry))
 		return NULL;
 	return res;
-}
-
-static inline bool our_mnt(struct vfsmount *mnt)
-{
-	return mnt->mnt_ns == current->nsproxy->mnt_ns;
 }
 
 /* commit 7f70893173b056df691b2ee7546bb44fd9abae6a */
